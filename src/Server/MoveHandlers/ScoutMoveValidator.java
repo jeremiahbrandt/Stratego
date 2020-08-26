@@ -1,7 +1,7 @@
 package Server.MoveHandlers;
 
 
-import Server.Square;
+import Protocol.SquarePacket;
 
 public class ScoutMoveValidator implements IMoveValidator {
     public ScoutMoveValidator() {
@@ -9,7 +9,7 @@ public class ScoutMoveValidator implements IMoveValidator {
     }
 
     @Override
-    public boolean isValidMove(Square currentLocation, Square newLocation) {
+    public boolean isValidMove(SquarePacket currentLocation, SquarePacket newLocation) {
         int currentRow = currentLocation.row;
         int currentColumn = currentLocation.col;
 
@@ -27,10 +27,6 @@ public class ScoutMoveValidator implements IMoveValidator {
             return true;
         }
 
-        if(rowDifference == 1 && columnDifference == 1) {
-            return true;
-        }
-
-        return false;
+        return rowDifference == 1 && columnDifference == 1;
     }
 }

@@ -1,13 +1,28 @@
 package Protocol;
 
-public class BoardPacket implements Packet {
-    public String[][] squares;
+import Server.Piece.APiece;
 
-    public BoardPacket(String[][] squares) {
-        this.squares = squares;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BoardPacket implements Packet {
+    private List<APiece> pieces;
+
+    public BoardPacket() {
+        this.pieces = new ArrayList<>();
     }
 
-    public void displayBoard() {
+    public void addPiece(APiece piece) {
+        pieces.add(piece);
+    }
 
+    public void addArmy(List<APiece> army) {
+        for(APiece piece: army) {
+            pieces.add(piece);
+        }
+    }
+
+    public List<APiece> getPieces() {
+        return pieces;
     }
 }

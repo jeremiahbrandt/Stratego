@@ -1,10 +1,10 @@
 package Server.MoveHandlers;
 
-import Server.Square;
+import Protocol.SquarePacket;
 
 public class StationaryMoveValidator implements IMoveValidator {
     @Override
-    public boolean isValidMove(Square currentLocation, Square newLocation) {
+    public boolean isValidMove(SquarePacket currentLocation, SquarePacket newLocation) {
         return false;
     }
 }

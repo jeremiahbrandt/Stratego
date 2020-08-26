@@ -1,9 +1,11 @@
 package Server.MoveHandlers;
 
 
-import Server.Square;
+import Protocol.SquarePacket;
 
-public interface IMoveValidator {
-    boolean isValidMove(Square currentLocation, Square newLocation);
+import java.io.Serializable;
+
+public interface IMoveValidator extends Serializable {
+    boolean isValidMove(SquarePacket currentLocation, SquarePacket newLocation);
 }
 

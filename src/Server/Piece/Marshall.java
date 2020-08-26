@@ -1,10 +1,10 @@
 package Server.Piece;
 
 import Server.MoveHandlers.NormalMoveValidator;
-import Server.Square;
+import Protocol.SquarePacket;
 
 public class Marshall extends APiece {
-    public Marshall(Square square) {
-        super("Marshall", 10, new NormalMoveValidator(), square);
+    public Marshall(SquarePacket squarePacket) {
+        super("Marshall", 10, new NormalMoveValidator(), squarePacket);
     }
 }

@@ -1,6 +1,6 @@
 package Server.Piece;
 
-import Server.Square;
+import Protocol.SquarePacket;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,27 +34,27 @@ public class PieceFactory {
         }
     }
 
-    public APiece getNextPiece(Square square) {
+    public APiece getNextPiece(SquarePacket squarePacket) {
         while(true) {
-            int randomInteger = (int)(Math.random()*((numOfPieceLeft.size()-1)+1))+0;
+            int randomInteger = (int) (Math.random() * ((numOfPieceLeft.size() - 1) + 1));
             String pieceCode = pieceCodes[randomInteger];
             if(numOfPieceLeft.get(pieceCode) > 0) {
                 this.numOfPieceLeft.replace(pieceCode, this.numOfPieceLeft.get(pieceCode)-1);
-                switch (pieceCode) {
-                    case "Bomb": return new Bomb(square);
-                    case "Marshall": return new Marshall(square);
-                    case "General": return new General(square);
-                    case "Colonel": return new Colonel(square);
-                    case "Major": return new Major(square);
-                    case "Captain": return new Captain(square);
-                    case "Lieutenant": return new Lieutenant(square);
-                    case "Sergeant": return new Sergeant(square);
-                    case "Miner": return new Miner(square);
-                    case "Scout": return new Scout(square);
-                    case "Spy": return new Spy(square);
-                    case "Flag": return new Flag(square);
-                    default: throw new Error();
-                }
+                return switch (pieceCode) {
+                    case "Bomb" -> new Bomb(squarePacket);
+                    case "Marshall" -> new Marshall(squarePacket);
+                    case "General" -> new General(squarePacket);
+                    case "Colonel" -> new Colonel(squarePacket);
+                    case "Major" -> new Major(squarePacket);
+                    case "Captain" -> new Captain(squarePacket);
+                    case "Lieutenant" -> new Lieutenant(squarePacket);
+                    case "Sergeant" -> new Sergeant(squarePacket);
+                    case "Miner" -> new Miner(squarePacket);
+                    case "Scout" -> new Scout(squarePacket);
+                    case "Spy" -> new Spy(squarePacket);
+                    case "Flag" -> new Flag(squarePacket);
+                    default -> throw new Error();
+                };
             }
         }
     }

@@ -3,6 +3,7 @@ package Server;
 import Protocol.BoardPacket;
 import Protocol.Request;
 import Protocol.Response;
+import Protocol.SquarePacket;
 import Server.Piece.APiece;
 import Server.Piece.PieceFactory;
 
@@ -21,7 +22,7 @@ public class ClientConnection implements Runnable {
 
     public ClientConnection(Socket socket) {
         this.socket = socket;
-        army = new ArrayList<APiece>();
+        army = new ArrayList<>();
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
@@ -69,11 +70,11 @@ public class ClientConnection implements Runnable {
         return army;
     }
 
-    public void createArmy(List<Square> startingSquares) {
+    public void createArmy(List<SquarePacket> startingSquarePackets) {
         PieceFactory pieceFactory = new PieceFactory();
 
-        for(Square currentSquare: startingSquares) {
-            army.add(pieceFactory.getNextPiece(currentSquare));
+        for(SquarePacket currentSquarePacket : startingSquarePackets) {
+            army.add(pieceFactory.getNextPiece(currentSquarePacket));
         }
     }
 

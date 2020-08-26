@@ -1,30 +1,32 @@
 package Server.Piece;
 
 import Server.MoveHandlers.IMoveValidator;
-import Server.Square;
+import Protocol.SquarePacket;
 
-public abstract class APiece {
+import java.io.Serializable;
+
+public abstract class APiece implements Serializable {
     private String name;
     private int rank;
     private IMoveValidator moveValidator;
-    private Square square;
+    private SquarePacket squarePacket;
     private boolean jailed;
 
-    public APiece(String name, int rank, IMoveValidator moveValidator, Square square) {
+    public APiece(String name, int rank, IMoveValidator moveValidator, SquarePacket squarePacket) {
         super();
         this.name = name;
         this.rank = rank;
         this.moveValidator = moveValidator;
-        this.square = square;
+        this.squarePacket = squarePacket;
         this.jailed = false;
     }
 
-    public Square getLocation() {
-        return this.square;
+    public SquarePacket getLocation() {
+        return this.squarePacket;
     }
 
-    public void setLocation(Square square) {
-        this.square = square;
+    public void setLocation(SquarePacket squarePacket) {
+        this.squarePacket = squarePacket;
     }
 
     public IMoveValidator getMoveValidator() {

@@ -1,10 +1,12 @@
-package Server;
+package Protocol;
 
-public class Square {
+import java.io.Serializable;
+
+public class SquarePacket implements Serializable {
     private static int rowCount = 0, colCount = 0;
     public int row, col;
 
-    public Square() {
+    public SquarePacket() {
         row = rowCount;
         col = colCount;
 

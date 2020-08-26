@@ -3,17 +3,16 @@ package Client;
 import Protocol.BoardPacket;
 import Protocol.MovePacket;
 import Protocol.Packet;
-import Protocol.Response;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
 public class Listener implements Runnable {
-    private Board board;
+    private BoardView boardView;
     private ObjectInputStream in;
 
-    public Listener(Board board, ObjectInputStream in) {
-        this.board = board;
+    public Listener(BoardView boardView, ObjectInputStream in) {
+        this.boardView = boardView;
         this.in = in;
     }
 
@@ -22,11 +21,11 @@ public class Listener implements Runnable {
         while (true) {
             try {
                 Packet res = (Packet) in.readObject();
+                System.out.println();
                 if(res instanceof BoardPacket) {
-                    System.out.println("Board");
-                    board.displayBoard((BoardPacket) res);
+                    boardView.displayBoard((BoardPacket) res);
                 } else if(res instanceof MovePacket) {
-                    System.out.println("Move");
+                    boardView.displayMoves((MovePacket) res);
                 }
                 System.out.println(res + " received " + in + ".");
             } catch (IOException | ClassNotFoundException e) {

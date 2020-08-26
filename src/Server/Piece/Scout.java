@@ -1,10 +1,10 @@
 package Server.Piece;
 
 import Server.MoveHandlers.ScoutMoveValidator;
-import Server.Square;
+import Protocol.SquarePacket;
 
 public class Scout extends APiece {
-    public Scout(Square square) {
-        super("Scout", 2, new ScoutMoveValidator(), square);
+    public Scout(SquarePacket squarePacket) {
+        super("Scout", 2, new ScoutMoveValidator(), squarePacket);
     }
 }

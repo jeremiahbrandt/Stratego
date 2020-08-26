@@ -2,20 +2,22 @@ package Server;
 
 import Exceptions.TooManyPlayersException;
 import Protocol.BoardPacket;
+import Protocol.SquarePacket;
 import Server.Piece.APiece;
+import Server.Piece.Enemy;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
     private List<ClientConnection> connections;
-    private List<Square> board;
+    private List<SquarePacket> board;
     private boolean isStarted;
     private ClientConnection currentPlayer;
 
     public Game() {
-        connections = new ArrayList<ClientConnection>();
-        board = new ArrayList<Square>();
+        connections = new ArrayList<>();
+        board = new ArrayList<>();
         isStarted = false;
         createSquares();
     }
@@ -48,26 +50,24 @@ public class Game {
     }
 
     private void sendBoard(ClientConnection connection) {
-        String[][] squares = new String[10][10];
+        BoardPacket boardPacket = new BoardPacket();
 
-        for(APiece piece: connection.getArmy()) {
-            squares[piece.getLocation().col][piece.getLocation().row] = piece.toString();
-        }
+        boardPacket.addArmy(connection.getArmy());
 
         for(ClientConnection opponentConnection: connections) {
             if(opponentConnection != connection) {
-                for(APiece piece: opponentConnection.getArmy()) {
-                    squares[piece.getLocation().col][piece.getLocation().row] = "?";
+                for(APiece piece: opponentConnection.getArmy())  {
+                    boardPacket.addPiece(new Enemy(piece.getLocation()));
                 }
             }
         }
 
-        connection.sendBoard(new BoardPacket(squares));
+        connection.sendBoard(boardPacket);
     }
 
     private void createSquares() {
         for(int i=0; i<100; i++) {
-            board.add(new Square());
+            board.add(new SquarePacket());
         }
     }
 }

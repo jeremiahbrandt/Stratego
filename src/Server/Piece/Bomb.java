@@ -1,10 +1,10 @@
 package Server.Piece;
 
 import Server.MoveHandlers.StationaryMoveValidator;
-import Server.Square;
+import Protocol.SquarePacket;
 
 public class Bomb extends APiece {
-    public Bomb(Square square) {
-        super("Bomb", 12, new StationaryMoveValidator(), square);
+    public Bomb(SquarePacket squarePacket) {
+        super("Bomb", 12, new StationaryMoveValidator(), squarePacket);
     }
 }

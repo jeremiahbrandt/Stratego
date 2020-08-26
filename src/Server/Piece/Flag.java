@@ -1,10 +1,10 @@
 package Server.Piece;
 
 import Server.MoveHandlers.StationaryMoveValidator;
-import Server.Square;
+import Protocol.SquarePacket;
 
 public class Flag extends APiece {
-    public Flag(Square square) {
-        super("Flag", 0, new StationaryMoveValidator(), square);
+    public Flag(SquarePacket squarePacket) {
+        super("Flag", 0, new StationaryMoveValidator(), squarePacket);
     }
 }

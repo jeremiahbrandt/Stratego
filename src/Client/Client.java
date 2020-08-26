@@ -3,7 +3,6 @@ package Client;
 import Protocol.Request;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class Client extends Application {
     private Listener listener;
     private Thread listenerThread;
 
-    private Board board;
+    private BoardView boardView;
 
     public static void main(String[] args) {
         try {
@@ -35,10 +34,10 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        board = new Board(this);
+        boardView = new BoardView(this);
         connectToServer();
         primaryStage.setTitle("Stratego | Client.Client");
-        primaryStage.setScene(new Scene(board, 750, 750));
+        primaryStage.setScene(new Scene(boardView, 750, 750));
         primaryStage.show();
     }
 
@@ -55,7 +54,7 @@ public class Client extends Application {
         try {
             socket = new Socket(ipAddress, portNumber);
             out = new ObjectOutputStream(socket.getOutputStream());
-            listener = new Listener(board, new ObjectInputStream(socket.getInputStream()));
+            listener = new Listener(boardView, new ObjectInputStream(socket.getInputStream()));
             listenerThread = new Thread(listener);
             listenerThread.start();
             System.out.println("Successfully connected to the server.");

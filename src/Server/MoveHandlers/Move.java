@@ -1,15 +1,12 @@
 package Server.MoveHandlers;
 
 import Protocol.MovePacket;
-import Server.Game;
 import Server.Piece.APiece;
-import Server.Piece.Marshall;
-import Server.Piece.Spy;
-import Server.Square;
+import Protocol.SquarePacket;
 
 public class Move {
-    private Square previousLocation;
-    private Square newLocation;
+    private SquarePacket previousLocation;
+    private SquarePacket newLocation;
 
     private APiece attacker;
     private APiece defender;

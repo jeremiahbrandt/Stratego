@@ -7,14 +7,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class Square extends StackPane {
+public class SquareView extends StackPane {
     private static Border defaultBorder = new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderStroke.DEFAULT_WIDTHS));
     private static Color defaultBackground = Color.BLUE;
 
     private Rectangle bg;
     private Text text;
 
-    public Square() {
+    public SquareView() {
         super();
         bg = new Rectangle(75, 75);
         bg.setFill(defaultBackground);

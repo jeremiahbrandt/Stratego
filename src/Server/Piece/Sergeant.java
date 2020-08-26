@@ -1,10 +1,10 @@
 package Server.Piece;
 
 import Server.MoveHandlers.NormalMoveValidator;
-import Server.Square;
+import Protocol.SquarePacket;
 
 public class Sergeant extends APiece {
-    public Sergeant(Square square) {
-        super("Sergeant", 4, new NormalMoveValidator(), square);
+    public Sergeant(SquarePacket squarePacket) {
+        super("Sergeant", 4, new NormalMoveValidator(), squarePacket);
     }
 }

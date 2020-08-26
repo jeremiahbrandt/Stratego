@@ -1,9 +1,9 @@
 package Server.Piece;
 
 import Server.MoveHandlers.NormalMoveValidator;
-import Server.Square;
+import Protocol.SquarePacket;
 public class Lieutenant extends APiece {
-    public Lieutenant(Square square) {
-        super("Lieutenant", 5, new NormalMoveValidator(), square);
+    public Lieutenant(SquarePacket squarePacket) {
+        super("Lieutenant", 5, new NormalMoveValidator(), squarePacket);
     }
 }

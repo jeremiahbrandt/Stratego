@@ -1,10 +1,10 @@
 package Server.Piece;
 
 import Server.MoveHandlers.NormalMoveValidator;
-import Server.Square;
+import Protocol.SquarePacket;
 
 public class Major extends APiece {
-    public Major(Square square) {
-        super("Major", 7, new NormalMoveValidator(), square);
+    public Major(SquarePacket squarePacket) {
+        super("Major", 7, new NormalMoveValidator(), squarePacket);
     }
 }

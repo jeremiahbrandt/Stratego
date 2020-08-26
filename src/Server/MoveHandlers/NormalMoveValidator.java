@@ -1,7 +1,7 @@
 package Server.MoveHandlers;
 
 
-import Server.Square;
+import Protocol.SquarePacket;
 
 public class NormalMoveValidator implements IMoveValidator {
 
@@ -10,7 +10,7 @@ public class NormalMoveValidator implements IMoveValidator {
     }
 
     @Override
-    public boolean isValidMove(Square currentLocation, Square newLocation) {
+    public boolean isValidMove(SquarePacket currentLocation, SquarePacket newLocation) {
         int currentRow = currentLocation.row;
         int currentColumn = currentLocation.col;
 

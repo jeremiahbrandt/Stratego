@@ -1,7 +1,6 @@
-package Server.Piece;
+package Protocol.Piece;
 
 import Protocol.SquarePacket;
-import Server.MoveHandlers.IMoveValidator;
 import Server.MoveHandlers.StationaryMoveValidator;
 
 public class Enemy extends APiece {

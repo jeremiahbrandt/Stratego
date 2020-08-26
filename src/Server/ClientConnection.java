@@ -4,8 +4,8 @@ import Protocol.BoardPacket;
 import Protocol.Request;
 import Protocol.Response;
 import Protocol.SquarePacket;
-import Server.Piece.APiece;
-import Server.Piece.PieceFactory;
+import Protocol.Piece.APiece;
+import Protocol.Piece.PieceFactory;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,6 +19,7 @@ public class ClientConnection implements Runnable {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private List<APiece> army;
+    private Game game;
 
     public ClientConnection(Socket socket) {
         this.socket = socket;
@@ -33,12 +34,11 @@ public class ClientConnection implements Runnable {
 
     @Override
     public void run() {
-        joinGame();
-
         while (true) {
             try {
                 Request req = (Request) in.readObject();
                 System.out.println(req + " received from " + socket + ".");
+                game.handleMove(this, req);
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("There was a problem receiving a request from " + socket + ".");
                 e.printStackTrace();
@@ -47,8 +47,6 @@ public class ClientConnection implements Runnable {
     }
 
     public void sendBoard(BoardPacket boardPacket) {
-
-
         try {
             out.writeObject(boardPacket);
         } catch (IOException e) {
@@ -78,7 +76,7 @@ public class ClientConnection implements Runnable {
         }
     }
 
-    private void joinGame() {
-
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

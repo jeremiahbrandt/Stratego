@@ -25,10 +25,10 @@ public class ConnectionListener implements Runnable {
             try {
                 Socket socket = server.accept();
                 ClientConnection clientConnection = new ClientConnection(socket);
+                gamesManager.addClient(clientConnection);
                 Thread thread = new Thread(clientConnection);
                 thread.start();
                 connections.add(thread);
-                gamesManager.addClient(clientConnection);
                 System.out.println("New client connected " + socket);
             } catch (IOException e) {
                 e.printStackTrace();

@@ -17,4 +17,9 @@ public class SquarePacket implements Serializable {
             colCount++;
         }
     }
+
+    public SquarePacket(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
 }

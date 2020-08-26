@@ -2,9 +2,11 @@ package Server;
 
 import Exceptions.TooManyPlayersException;
 import Protocol.BoardPacket;
+import Protocol.Request;
 import Protocol.SquarePacket;
-import Server.Piece.APiece;
-import Server.Piece.Enemy;
+import Protocol.Piece.APiece;
+import Protocol.Piece.Enemy;
+import Server.MoveHandlers.Attack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,41 @@ public class Game {
         board = new ArrayList<>();
         isStarted = false;
         createSquares();
+    }
+
+    public void handleMove(ClientConnection connection, Request req) {
+        if(!isStarted) {
+            return;
+        }
+
+        if(connection != currentPlayer) {
+            return;
+        }
+
+        APiece attacker = null;
+        for(APiece piece: connection.getArmy()) {
+            if(piece.getLocation().row == req.previousLocation.row && piece.getLocation().col == req.previousLocation.col) {
+                attacker = piece;
+            }
+        }
+
+        APiece defender = null;
+        for(APiece piece: getOpponent(connection).getArmy()) {
+            if(piece.getLocation().row == req.previousLocation.row && piece.getLocation().col == req.previousLocation.col) {
+                defender = piece;
+            }
+        }
+
+        Attack attack;
+        boolean isLegalMove = attacker.getMoveValidator().isValidMove(req.previousLocation, req.newLocation);
+        if(isLegalMove && defender == null) {
+            attacker.setLocation(req.newLocation);
+            for(ClientConnection clientConnection: connections) {
+                sendBoard(clientConnection);
+            }
+        } else if(isLegalMove && defender != null) {
+            attack = new Attack(attacker, defender);
+        }
     }
 
     public void addConnection(ClientConnection connection) throws TooManyPlayersException {
@@ -54,14 +91,12 @@ public class Game {
 
         boardPacket.addArmy(connection.getArmy());
 
-        for(ClientConnection opponentConnection: connections) {
-            if(opponentConnection != connection) {
-                for(APiece piece: opponentConnection.getArmy())  {
-                    boardPacket.addPiece(new Enemy(piece.getLocation()));
-                }
+        ClientConnection opponent = getOpponent(connection);
+        if(opponent != null) {
+            for(APiece piece: getOpponent(connection).getArmy())  {
+                boardPacket.addPiece(new Enemy(piece.getLocation()));
             }
         }
-
         connection.sendBoard(boardPacket);
     }
 
@@ -69,5 +104,14 @@ public class Game {
         for(int i=0; i<100; i++) {
             board.add(new SquarePacket());
         }
+    }
+
+    private ClientConnection getOpponent(ClientConnection connection) {
+        for (ClientConnection opponentConnection : connections) {
+            if (opponentConnection != connection) {
+                return opponentConnection;
+            }
+        }
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package Server.Piece;
+package Protocol.Piece;
 
 import Server.MoveHandlers.IMoveValidator;
 import Protocol.SquarePacket;

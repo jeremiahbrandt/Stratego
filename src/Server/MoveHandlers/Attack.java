@@ -1,10 +1,9 @@
 package Server.MoveHandlers;
 
-import Protocol.MovePacket;
-import Server.Piece.APiece;
+import Protocol.Piece.APiece;
 import Protocol.SquarePacket;
 
-public class Move {
+public class Attack {
     private SquarePacket previousLocation;
     private SquarePacket newLocation;
 
@@ -16,7 +15,15 @@ public class Move {
 
     public MoveStatus status;
 
-    public Move(MovePacket movePacket) {
+    public Attack(APiece attacker) {
+
+    }
+
+    public Attack(APiece attacker, APiece defender) {
+
+    }
+
+//    public Move(MovePacket movePacket) {
 //        this.game = game;
 //        this.previousLocation = movePacket.previousLocation;
 //        this.newLocation = movePacket.newLocation;
@@ -112,5 +119,5 @@ public class Move {
 //            case FLAG_CAPTURE: return attacker + " captured the flag!";
 //            default: return "Invalid move!";
 //        }
-    }
+//    }
 }

@@ -1,7 +1,6 @@
 package Client;
 
 import Protocol.BoardPacket;
-import Protocol.MovePacket;
 import Protocol.Packet;
 
 import java.io.IOException;
@@ -18,15 +17,17 @@ public class Listener implements Runnable {
 
     @Override
     public void run() {
+        Packet res;
         while (true) {
             try {
-                Packet res = (Packet) in.readObject();
+                res = (Packet) in.readObject();
                 System.out.println();
                 if(res instanceof BoardPacket) {
                     boardView.displayBoard((BoardPacket) res);
-                } else if(res instanceof MovePacket) {
-                    boardView.displayMoves((MovePacket) res);
                 }
+//                else if(res instanceof MovePacket) {
+//                    boardView.displayMoves((MovePacket) res);
+//                }
                 System.out.println(res + " received " + in + ".");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();

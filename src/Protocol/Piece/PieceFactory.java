@@ -1,4 +1,4 @@
-package Server.Piece;
+package Protocol.Piece;
 
 import Protocol.SquarePacket;
 

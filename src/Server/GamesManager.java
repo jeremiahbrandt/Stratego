@@ -24,6 +24,7 @@ public class GamesManager {
 
         try {
             currentGame.addConnection(clientConnection);
+            clientConnection.setGame(currentGame);
         } catch (TooManyPlayersException e) {
             System.out.println("Unable to add " + clientConnection + " to " + currentGame + ".");
         }

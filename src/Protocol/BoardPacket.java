@@ -1,6 +1,6 @@
 package Protocol;
 
-import Server.Piece.APiece;
+import Protocol.Piece.APiece;
 
 import java.util.ArrayList;
 import java.util.List;

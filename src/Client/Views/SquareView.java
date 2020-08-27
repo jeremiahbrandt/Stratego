@@ -1,4 +1,4 @@
-package Client;
+package Client.Views;
 
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -12,8 +12,12 @@ import javafx.scene.text.Text;
 public class SquareView extends StackPane {
     private static SquareView selectedSquareView;
     private static SquareView destinationSquareView;
-    private static Border defaultBorder = new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderStroke.DEFAULT_WIDTHS));
-    private static Color defaultBackground = Color.BLUE;
+    private static Color defaultColor = Color.rgb(225, 238, 238);
+    private static Color activeColor = Color.rgb(56, 127, 242);
+    private static Color friendlyColor = Color.rgb(25,55, 210);
+    private static Color enemyColor = Color.rgb(153, 0, 0);
+    private static Color textColor = Color.rgb(210, 240, 240);
+    private static Border defaultBorder = new Border(new BorderStroke(Color.rgb(95, 95, 95), BorderStrokeStyle.NONE, CornerRadii.EMPTY, BorderStroke.DEFAULT_WIDTHS));
     private final BoardView boardView;
 
     private Rectangle bg;
@@ -22,14 +26,20 @@ public class SquareView extends StackPane {
     public SquareView(BoardView boardView) {
         super();
         super.setOnMouseClicked(mouseEvent -> handleClick(mouseEvent));
-        bg = new Rectangle(75, 75);
-        bg.setFill(defaultBackground);
         super.setBorder(defaultBorder);
+
         text = new Text();
         text.setFont(Font.font("TimesRoman", FontWeight.LIGHT, 10));
+        bg = new Rectangle(75, 75);
+
         super.getChildren().addAll(bg, text);
 
         this.boardView = boardView;
+    }
+
+    public void setText(String text) {
+        this.text.setText(text);
+        setBackgroundColor();
     }
 
     private void handleClick(MouseEvent e) {
@@ -47,7 +57,13 @@ public class SquareView extends StackPane {
         }
     }
 
-    public void setText(String text) {
-        this.text.setText(text);
+    private void setBackgroundColor() {
+        if(text.getText() == "") {
+            bg.setFill(defaultColor);
+        } else if (text.getText().contains("-1")) {
+            bg.setFill(enemyColor);
+        } else {
+            bg.setFill(friendlyColor);
+        }
     }
 }

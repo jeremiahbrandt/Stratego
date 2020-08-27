@@ -1,10 +1,12 @@
-package Client;
+package Client.Views;
 
+import Client.Client;
 import Protocol.BoardPacket;
 import Protocol.Request;
 import Protocol.SquarePacket;
 import Protocol.Piece.APiece;
 import javafx.scene.Group;
+import javafx.scene.layout.BorderPane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ public class BoardView extends Group {
         }
     }
 
-    protected void sendMove(SquareView selectedSquareView, SquareView destinationSquareView) {
+    public void sendMove(SquareView selectedSquareView, SquareView destinationSquareView) {
         int previousLocationRow = (int) selectedSquareView.getLayoutX() / 75;
         int previousLocationCol = (int) selectedSquareView.getLayoutY() / 75;
         SquarePacket previousLocation = new SquarePacket(previousLocationCol, previousLocationRow);

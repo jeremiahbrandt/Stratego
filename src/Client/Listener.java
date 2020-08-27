@@ -1,8 +1,8 @@
 package Client;
 
+import Client.Views.BoardView;
 import Protocol.BoardPacket;
 import Protocol.Packet;
-import Protocol.SquarePacket;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,8 +22,6 @@ public class Listener implements Runnable {
         while (true) {
             try {
                 res = (Packet) in.readObject();
-                //TODO: Remove test
-//                for(SquarePacket squarePacket: res.s)
                 if(res instanceof BoardPacket) {
                     boardView.displayBoard((BoardPacket) res);
                 }

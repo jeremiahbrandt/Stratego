@@ -1,5 +1,7 @@
 package Client;
 
+import Client.Views.BoardView;
+import Client.Views.GameView;
 import Protocol.Request;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -19,7 +21,7 @@ public class Client extends Application {
     private Listener listener;
     private Thread listenerThread;
 
-    private BoardView boardView;
+    private GameView gameView;
 
     public static void main(String[] args) {
         try {
@@ -34,10 +36,10 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        boardView = new BoardView(this);
+        gameView = new GameView(this);
         connectToServer();
         primaryStage.setTitle("Stratego | Client.Client");
-        primaryStage.setScene(new Scene(boardView, 750, 750));
+        primaryStage.setScene(new Scene(gameView, 1200, 750));
         primaryStage.show();
     }
 
@@ -55,7 +57,7 @@ public class Client extends Application {
         try {
             socket = new Socket(ipAddress, portNumber);
             out = new ObjectOutputStream(socket.getOutputStream());
-            listener = new Listener(boardView, new ObjectInputStream(socket.getInputStream()));
+            listener = new Listener(gameView.getBoardView(), new ObjectInputStream(socket.getInputStream()));
             listenerThread = new Thread(listener);
             listenerThread.start();
             System.out.println("Successfully connected to the server.");

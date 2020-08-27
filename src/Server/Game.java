@@ -48,6 +48,9 @@ public class Game {
         }
 
         Attack attack;
+        if(attacker == null) {
+            return;
+        }
         boolean isLegalMove = attacker.getMoveValidator().isValidMove(req.previousLocation, req.newLocation);
         if(isLegalMove && defender == null) {
             attacker.setLocation(req.newLocation);

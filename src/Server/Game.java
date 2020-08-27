@@ -6,7 +6,7 @@ import Protocol.Request;
 import Protocol.SquarePacket;
 import Protocol.Piece.APiece;
 import Protocol.Piece.Enemy;
-import Server.MoveHandlers.Attack;
+import Server.Move.Attack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,27 +39,36 @@ public class Game {
                 attacker = piece;
             }
         }
+        if(attacker == null) {
+            return;
+        }
 
-        APiece defender = null;
-        for(APiece piece: getOpponent(connection).getArmy()) {
-            if(piece.getLocation().row == req.previousLocation.row && piece.getLocation().col == req.previousLocation.col) {
+        APiece defender = null;;
+        ClientConnection opponent = getOpponent(connection);
+        for(APiece piece: opponent.getArmy()) {
+            if(piece.getLocation().row == req.newLocation.row && piece.getLocation().col == req.newLocation.col) {
                 defender = piece;
             }
         }
 
-        Attack attack;
-        if(attacker == null) {
+        boolean isLegalMove = attacker.getMoveValidator().isValidMove(req.previousLocation, req.newLocation);
+        if(!isLegalMove) {
             return;
         }
-        boolean isLegalMove = attacker.getMoveValidator().isValidMove(req.previousLocation, req.newLocation);
-        if(isLegalMove && defender == null) {
+
+        if(defender == null) {
             attacker.setLocation(req.newLocation);
-            for(ClientConnection clientConnection: connections) {
-                sendBoard(clientConnection);
+        } else {
+            Attack attack = new Attack(attacker, defender);
+            if(attack.getWinner() == attacker) {
+                attacker.setLocation(req.newLocation);
+                defender.capture();
+            } else if(attack.getWinner() == defender) {
+                attacker.capture();
             }
-        } else if(isLegalMove && defender != null) {
-            attack = new Attack(attacker, defender);
         }
+
+        nextTurn();
     }
 
     public void addConnection(ClientConnection connection) throws TooManyPlayersException {
@@ -92,12 +101,18 @@ public class Game {
     private void sendBoard(ClientConnection connection) {
         BoardPacket boardPacket = new BoardPacket();
 
-        boardPacket.addArmy(connection.getArmy());
+        for(APiece piece: connection.getArmy()) {
+            if(!piece.getIsCaptured()) {
+                boardPacket.addPiece(piece);
+            }
+        }
 
         ClientConnection opponent = getOpponent(connection);
         if(opponent != null) {
             for(APiece piece: getOpponent(connection).getArmy())  {
-                boardPacket.addPiece(new Enemy(piece.getLocation()));
+                if(!piece.getIsCaptured()) {
+                    boardPacket.addPiece(new Enemy(piece.getLocation()));
+                }
             }
         }
         connection.sendBoard(boardPacket);
@@ -116,5 +131,18 @@ public class Game {
             }
         }
         return null;
+    }
+
+    private void nextTurn() {
+        for(ClientConnection clientConnection: connections) {
+            sendBoard(clientConnection);
+        }
+
+        for(ClientConnection clientConnection: connections) {
+            if(clientConnection != currentPlayer) {
+                currentPlayer = clientConnection;
+                break;
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 package Protocol.Piece;
 
 import Protocol.SquarePacket;
-import Server.MoveHandlers.StationaryMoveValidator;
+import Server.Move.StationaryMoveValidator;
 
 public class Enemy extends APiece {
     public Enemy(SquarePacket squarePacket) {

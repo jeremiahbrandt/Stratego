@@ -44,6 +44,7 @@ public class Client extends Application {
     public void sendRequest(Request req) {
         try {
             out.writeObject(req);
+            out.reset();
         } catch (IOException e) {
             System.out.println("There was a problem sending " + req + " through " + out + ".");
             e.printStackTrace();

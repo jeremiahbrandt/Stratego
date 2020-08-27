@@ -16,12 +16,6 @@ public class BoardPacket implements Packet {
         pieces.add(piece);
     }
 
-    public void addArmy(List<APiece> army) {
-        for(APiece piece: army) {
-            pieces.add(piece);
-        }
-    }
-
     public List<APiece> getPieces() {
         return pieces;
     }

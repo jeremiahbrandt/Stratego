@@ -1,6 +1,6 @@
 package Protocol.Piece;
 
-import Server.MoveHandlers.NormalMoveValidator;
+import Server.Move.NormalMoveValidator;
 import Protocol.SquarePacket;
 public class Lieutenant extends APiece {
     public Lieutenant(SquarePacket squarePacket) {

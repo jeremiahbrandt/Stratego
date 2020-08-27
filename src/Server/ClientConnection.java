@@ -49,6 +49,7 @@ public class ClientConnection implements Runnable {
     public void sendBoard(BoardPacket boardPacket) {
         try {
             out.writeObject(boardPacket);
+            out.reset();
         } catch (IOException e) {
             System.out.println("There was a problem sending the board to " + this + ".");
             e.printStackTrace();

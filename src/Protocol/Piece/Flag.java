@@ -1,6 +1,6 @@
 package Protocol.Piece;
 
-import Server.MoveHandlers.StationaryMoveValidator;
+import Server.Move.StationaryMoveValidator;
 import Protocol.SquarePacket;
 
 public class Flag extends APiece {

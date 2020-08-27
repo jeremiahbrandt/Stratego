@@ -1,6 +1,6 @@
 package Protocol.Piece;
 
-import Server.MoveHandlers.ScoutMoveValidator;
+import Server.Move.ScoutMoveValidator;
 import Protocol.SquarePacket;
 
 public class Scout extends APiece {

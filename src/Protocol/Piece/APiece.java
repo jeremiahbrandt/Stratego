@@ -1,6 +1,6 @@
 package Protocol.Piece;
 
-import Server.MoveHandlers.IMoveValidator;
+import Server.Move.IMoveValidator;
 import Protocol.SquarePacket;
 
 import java.io.Serializable;
@@ -10,7 +10,7 @@ public abstract class APiece implements Serializable {
     private int rank;
     private IMoveValidator moveValidator;
     private SquarePacket squarePacket;
-    private boolean jailed;
+    private boolean captured;
 
     public APiece(String name, int rank, IMoveValidator moveValidator, SquarePacket squarePacket) {
         super();
@@ -18,7 +18,7 @@ public abstract class APiece implements Serializable {
         this.rank = rank;
         this.moveValidator = moveValidator;
         this.squarePacket = squarePacket;
-        this.jailed = false;
+        this.captured = false;
     }
 
     public SquarePacket getLocation() {
@@ -37,12 +37,12 @@ public abstract class APiece implements Serializable {
         return this.rank;
     }
 
-    public void sendToJail() {
-        this.jailed = true;
+    public void capture() {
+        this.captured = true;
     }
 
-    public boolean getIsJailed() {
-        return this.jailed;
+    public boolean getIsCaptured() {
+        return this.captured;
     }
 
     public String toString() {

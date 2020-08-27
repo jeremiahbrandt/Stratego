@@ -1,4 +1,4 @@
-package Server.MoveHandlers;
+package Server.Move;
 
 
 import Protocol.SquarePacket;

@@ -1,5 +1,7 @@
 package Client.Views;
 
+import Client.Client;
+import Protocol.Message;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -15,6 +17,8 @@ public class ChatView extends VBox {
     private static Font titleFont = new Font(25);
     private static Font secondaryFont = new Font(20);
 
+    private Client client;
+
     private Text title;
     private TextArea messages;
 
@@ -23,7 +27,8 @@ public class ChatView extends VBox {
     private Button sendButton;
 
 
-    public ChatView() {
+    public ChatView(Client client) {
+        this.client = client;
         super.setAlignment(Pos.CENTER);
         super.setPrefWidth(450);
         title = new Text( "Messages");
@@ -40,8 +45,28 @@ public class ChatView extends VBox {
         sendButton = new Button("Send");
         sendButton.setPrefWidth(100);
         sendButton.setFont(secondaryFont);
+        sendButton.setOnMouseClicked(mouseEvent -> sendMessage());
         inputContainer.getChildren().addAll(input, sendButton);
 
         super.getChildren().addAll(title, messages, inputContainer);
+    }
+
+    public void displayMessage(Message message) {
+        String originalMsg = message.getMsg();
+        String displayMsg = "";
+
+        for(int i=0; i< originalMsg.length(); i++) {
+            displayMsg += originalMsg.charAt(i);
+            if(i % 50 == 0 && i != 0) {
+                displayMsg += "\n";
+            }
+        }
+
+        messages.appendText("[" + message.getSender() + "]: " + displayMsg + "\n");
+    }
+
+    private void sendMessage() {
+        client.sendRequest(new Message("Player", input.getText()));
+        input.clear();
     }
 }

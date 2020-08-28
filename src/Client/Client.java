@@ -1,7 +1,8 @@
 package Client;
 
-import Client.Views.BoardView;
 import Client.Views.GameView;
+import Protocol.Message;
+import Protocol.Packet;
 import Protocol.Request;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -43,12 +44,16 @@ public class Client extends Application {
         primaryStage.show();
     }
 
-    public void sendRequest(Request req) {
+    public void sendRequest(Packet packet) {
         try {
-            out.writeObject(req);
+            if(packet instanceof Request) {
+                out.writeObject(packet);
+            } else if(packet instanceof Message) {
+                out.writeObject(packet);
+            }
             out.reset();
         } catch (IOException e) {
-            System.out.println("There was a problem sending " + req + " through " + out + ".");
+            System.out.println("There was a problem sending " + packet + " through " + out + ".");
             e.printStackTrace();
         }
     }
@@ -57,7 +62,7 @@ public class Client extends Application {
         try {
             socket = new Socket(ipAddress, portNumber);
             out = new ObjectOutputStream(socket.getOutputStream());
-            listener = new Listener(gameView.getBoardView(), new ObjectInputStream(socket.getInputStream()));
+            listener = new Listener(gameView, new ObjectInputStream(socket.getInputStream()));
             listenerThread = new Thread(listener);
             listenerThread.start();
             System.out.println("Successfully connected to the server.");

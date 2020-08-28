@@ -37,6 +37,10 @@ public abstract class APiece implements Serializable {
         return this.rank;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public void capture() {
         this.captured = true;
     }

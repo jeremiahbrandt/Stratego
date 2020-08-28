@@ -1,9 +1,7 @@
 package Server;
 
 import Exceptions.TooManyPlayersException;
-import Protocol.BoardPacket;
-import Protocol.Request;
-import Protocol.SquarePacket;
+import Protocol.*;
 import Protocol.Piece.APiece;
 import Protocol.Piece.Enemy;
 import Server.Move.Attack;
@@ -43,7 +41,7 @@ public class Game {
             return;
         }
 
-        APiece defender = null;;
+        APiece defender = null;
         ClientConnection opponent = getOpponent(connection);
         for(APiece piece: opponent.getArmy()) {
             if(piece.getLocation().row == req.newLocation.row && piece.getLocation().col == req.newLocation.col) {
@@ -61,11 +59,16 @@ public class Game {
         } else {
             Attack attack = new Attack(attacker, defender);
             if(attack.getWinner() == attacker) {
+                currentPlayer.sendChatMessage(new Message("Server", attack.getWinnerMessage()));
+                getOpponent(currentPlayer).sendChatMessage(new Message("Server", attack.getLoserMessage()));
                 attacker.setLocation(req.newLocation);
                 defender.capture();
             } else if(attack.getWinner() == defender) {
+                currentPlayer.sendChatMessage(new Message("Server", attack.getLoserMessage()));
+                getOpponent(currentPlayer).sendChatMessage(new Message("Server", attack.getWinnerMessage()));
                 attacker.capture();
             }
+
         }
 
         nextTurn();
@@ -78,9 +81,12 @@ public class Game {
             connections.add(connection);
             if(connections.size() == 2) {
                 connection.createArmy(board.subList(60, 100));
+                connection.sendChatMessage(new Message("Server", "Welcome to Stratego! The game will now begin. It is your opponent's turn to move."));
+                currentPlayer.sendChatMessage(new Message("Server", "You opponent joined the game! It is your turn to move."));
                 start();
             } else {
                 connection.createArmy(board.subList(0, 40));
+                connection.sendChatMessage(new Message("Server", "Welcome to Stratego! Please wait until your opponent connects."));
                 currentPlayer = connection;
             }
         }
@@ -88,6 +94,11 @@ public class Game {
         for(ClientConnection player: connections) {
             sendBoard(player);
         }
+    }
+
+    public void broadcastMessage(ClientConnection senderConnection, Message message) {
+        senderConnection.sendChatMessage(new Message("You", message.getMsg()));
+        getOpponent(senderConnection).sendChatMessage(new Message("Opponent", message.getMsg()));
     }
 
     public boolean isStarted() {

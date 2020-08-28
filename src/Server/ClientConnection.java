@@ -1,9 +1,6 @@
 package Server;
 
-import Protocol.BoardPacket;
-import Protocol.Request;
-import Protocol.Response;
-import Protocol.SquarePacket;
+import Protocol.*;
 import Protocol.Piece.APiece;
 import Protocol.Piece.PieceFactory;
 
@@ -36,9 +33,13 @@ public class ClientConnection implements Runnable {
     public void run() {
         while (true) {
             try {
-                Request req = (Request) in.readObject();
-                System.out.println(req + " received from " + socket + ".");
-                game.handleMove(this, req);
+                Packet packet = (Packet) in.readObject();
+                if(packet instanceof Request) {
+                    game.handleMove(this, (Request) packet);
+                } else if(packet instanceof Message) {
+                    game.broadcastMessage(this, (Message) packet);
+                }
+                System.out.println(packet + " received from " + socket + ".");
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("There was a problem receiving a request from " + socket + ".");
                 e.printStackTrace();
@@ -56,11 +57,12 @@ public class ClientConnection implements Runnable {
         }
     }
 
-    public void sendResponse(Response response) {
+    public void sendChatMessage(Message message) {
         try {
-            out.writeObject(response);
+            out.writeObject(message);
+            out.reset();
         } catch (IOException e) {
-            System.out.println("There was a problem sending " + response + " to the clients");
+            System.out.println("There was a problem sending the message to " + this + ".");
             e.printStackTrace();
         }
     }

@@ -1,18 +1,20 @@
 package Client;
 
 import Client.Views.BoardView;
+import Client.Views.GameView;
 import Protocol.BoardPacket;
+import Protocol.Message;
 import Protocol.Packet;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
 public class Listener implements Runnable {
-    private BoardView boardView;
+    private GameView gameView;
     private ObjectInputStream in;
 
-    public Listener(BoardView boardView, ObjectInputStream in) {
-        this.boardView = boardView;
+    public Listener(GameView gameView, ObjectInputStream in) {
+        this.gameView = gameView;
         this.in = in;
     }
 
@@ -23,7 +25,9 @@ public class Listener implements Runnable {
             try {
                 res = (Packet) in.readObject();
                 if(res instanceof BoardPacket) {
-                    boardView.displayBoard((BoardPacket) res);
+                    gameView.displayBoard((BoardPacket) res);
+                } else if (res instanceof Message) {
+                    gameView.displayMessage((Message) res);
                 }
                 System.out.println(res + " received " + in + ".");
             } catch (IOException | ClassNotFoundException e) {

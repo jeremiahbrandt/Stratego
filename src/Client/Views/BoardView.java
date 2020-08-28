@@ -46,7 +46,7 @@ public class BoardView extends Group {
 
     public void displayBoard(BoardPacket boardPacket) {
         for(SquareView squareView: squareViews) {
-            squareView.setText("");
+            squareView.setText(-2);
         }
 
         this.boardPacket = boardPacket;
@@ -57,7 +57,7 @@ public class BoardView extends Group {
                 int currentRow = (int) currentSquareView.getLayoutX() / 75;
                 int currentCol = (int) currentSquareView.getLayoutY() / 75;
                 if(pieceRow == currentRow && pieceCol == currentCol) {
-                    currentSquareView.setText(piece.toString());
+                    currentSquareView.setText(piece.getRank());
                     break;
                 }
             }

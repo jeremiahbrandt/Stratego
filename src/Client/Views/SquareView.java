@@ -29,7 +29,8 @@ public class SquareView extends StackPane {
         super.setBorder(defaultBorder);
 
         text = new Text();
-        text.setFont(Font.font("TimesRoman", FontWeight.LIGHT, 10));
+        text.setFont(Font.font("TimesRoman", FontWeight.LIGHT, 20));
+        text.setFill(textColor);
         bg = new Rectangle(75, 75);
 
         super.getChildren().addAll(bg, text);
@@ -37,33 +38,44 @@ public class SquareView extends StackPane {
         this.boardView = boardView;
     }
 
-    public void setText(String text) {
-        this.text.setText(text);
-        setBackgroundColor();
-    }
-
-    private void handleClick(MouseEvent e) {
-        if(e.getButton() == MouseButton.PRIMARY) {
-            if(text.getText() != "" && !text.getText().contains("-1")) {
-                selectedSquareView = this;
-            }
-        } else if (e.getButton() == MouseButton.SECONDARY) {
-            if(text.getText() == "" || text.getText().contains("-1")) {
-                destinationSquareView = this;
-                boardView.sendMove(selectedSquareView, destinationSquareView);
-                selectedSquareView = null;
-                destinationSquareView = null;
-            }
+    public void setText(int text) {
+        if(text == 0) {
+            this.text.setText("F");
+        } else if(text == 12) {
+            this.text.setText("B");
+        } else if(text == 3) {
+            this.text.setText("M");
+        } else if(text > 0) {
+            this.text.setText(String.valueOf(text));
+        } else if(text == -1) {
+            this.text.setText("?");
         }
+
+        setBackgroundColor();
     }
 
     private void setBackgroundColor() {
         if(text.getText() == "") {
             bg.setFill(defaultColor);
-        } else if (text.getText().contains("-1")) {
+        } else if (text.getText().contains("?")) {
             bg.setFill(enemyColor);
         } else {
             bg.setFill(friendlyColor);
+        }
+    }
+
+    private void handleClick(MouseEvent e) {
+        if(e.getButton() == MouseButton.PRIMARY) {
+            if(text.getText() != "" && !text.getText().contains("?")) {
+                selectedSquareView = this;
+            }
+        } else if (e.getButton() == MouseButton.SECONDARY) {
+            if(text.getText() == "" || text.getText().contains("?")) {
+                destinationSquareView = this;
+                boardView.sendMove(selectedSquareView, destinationSquareView);
+                selectedSquareView = null;
+                destinationSquareView = null;
+            }
         }
     }
 }

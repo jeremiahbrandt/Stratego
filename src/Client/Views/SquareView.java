@@ -1,10 +1,14 @@
 package Client.Views;
 
+import Protocol.Piece.APiece;
+import Protocol.Piece.Enemy;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -18,46 +22,48 @@ public class SquareView extends StackPane {
     private static Color enemyColor = Color.rgb(153, 0, 0);
     private static Color textColor = Color.rgb(210, 240, 240);
     private static Border defaultBorder = new Border(new BorderStroke(Color.rgb(95, 95, 95), BorderStrokeStyle.NONE, CornerRadii.EMPTY, BorderStroke.DEFAULT_WIDTHS));
-    private final BoardView boardView;
 
-    private Rectangle bg;
+    private final BoardView boardView;
+    private APiece occupant;
+
+    private Shape bg;
     private Text text;
 
     public SquareView(BoardView boardView) {
-        super();
+        this.boardView = boardView;
+
         super.setOnMouseClicked(mouseEvent -> handleClick(mouseEvent));
         super.setBorder(defaultBorder);
 
         text = new Text();
+        text.setFill(defaultColor);
         text.setFont(Font.font("TimesRoman", FontWeight.LIGHT, 20));
-        text.setFill(textColor);
-        bg = new Rectangle(75, 75);
 
+        bg = new Circle(35);
         super.getChildren().addAll(bg, text);
-
-        this.boardView = boardView;
     }
 
-    public void setText(int text) {
-        if(text == 0) {
-            this.text.setText("F");
-        } else if(text == 12) {
-            this.text.setText("B");
-        } else if(text == 3) {
-            this.text.setText("M");
-        } else if(text > 0) {
-            this.text.setText(String.valueOf(text));
-        } else if(text == -1) {
-            this.text.setText("?");
-        }
-
+    public void removeOccupant() {
+        bg.setVisible(false);
+        text.setText("");
+        this.occupant = null;
         setBackgroundColor();
     }
 
+    public void setOccupant(APiece newOccupant) {
+        bg.setVisible(true);
+        occupant = newOccupant;
+        setBackgroundColor();
+
+        if(occupant != null) {
+            text.setText(occupant.getShortName());
+        }
+    }
+
     private void setBackgroundColor() {
-        if(text.getText() == "") {
+        if(occupant == null) {
             bg.setFill(defaultColor);
-        } else if (text.getText().contains("?")) {
+        } else if (occupant instanceof Enemy) {
             bg.setFill(enemyColor);
         } else {
             bg.setFill(friendlyColor);

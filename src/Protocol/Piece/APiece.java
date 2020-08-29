@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 public abstract class APiece implements Serializable {
     private String name;
+    private String shortName;
     private int rank;
     private IMoveValidator moveValidator;
     private SquarePacket squarePacket;
@@ -39,6 +40,14 @@ public abstract class APiece implements Serializable {
 
     public String getName() {
         return this.name;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public String getShortName() {
+        return shortName;
     }
 
     public void capture() {

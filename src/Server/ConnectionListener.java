@@ -12,16 +12,19 @@ public class ConnectionListener implements Runnable {
     private List<Thread> connections;
     private GamesManager gamesManager;
 
+    private boolean listening;
+
     public ConnectionListener(ServerSocket server) {
         this.server = server;
-        connections = new ArrayList<Thread>();
+        connections = new ArrayList<>();
         gamesManager = new GamesManager();
     }
 
     @Override
     public void run() {
         System.out.println("Server is listening to for new client connections.");
-        while(true) {
+        listening = true;
+        while(listening) {
             try {
                 Socket socket = server.accept();
                 ClientConnection clientConnection = new ClientConnection(socket);

@@ -57,6 +57,12 @@ public class Attack {
     }
 
     private void setGameMessages() {
+        if(loser instanceof Flag) {
+            winnerMessage = "You captured your opponent's " + loser.getName() + "!";
+            loserMessage = "Your " + loser.getName() +  " was captured!";
+            return;
+        }
+
         if (winner instanceof Bomb) {
             winnerMessage = "Your " + defender.getName() + " blew up your opponent's " + attacker.getName() + "!";
             loserMessage = "Your " + attacker.getName() + " was blown up by your opponent's " + defender.getName() + "!";

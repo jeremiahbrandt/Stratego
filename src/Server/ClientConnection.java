@@ -17,6 +17,7 @@ public class ClientConnection implements Runnable {
     private ObjectInputStream in;
     private List<APiece> army;
     private Game game;
+    private boolean listening;
 
     public ClientConnection(Socket socket) {
         this.socket = socket;
@@ -31,7 +32,8 @@ public class ClientConnection implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        listening = true;
+        while (listening) {
             try {
                 Packet packet = (Packet) in.readObject();
                 if(packet instanceof Request) {
@@ -44,6 +46,14 @@ public class ClientConnection implements Runnable {
                 System.out.println("There was a problem receiving a request from " + socket + ".");
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void sendGameStatus(GameStatus gameStatus) {
+        try {
+            out.writeObject(gameStatus);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

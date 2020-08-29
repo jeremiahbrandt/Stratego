@@ -40,7 +40,7 @@ public class Client extends Application {
         gameView = new GameView(this);
         connectToServer();
         primaryStage.setTitle("Stratego | Client.Client");
-        primaryStage.setScene(new Scene(gameView, 1200, 750));
+        primaryStage.setScene(new Scene(gameView, 1200, 800));
         primaryStage.show();
     }
 

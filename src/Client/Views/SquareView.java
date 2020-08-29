@@ -32,7 +32,7 @@ public class SquareView extends StackPane {
     public SquareView(BoardView boardView) {
         this.boardView = boardView;
 
-        super.setOnMouseClicked(mouseEvent -> handleClick(mouseEvent));
+        super.setOnMouseClicked(this::handleClick);
         super.setBorder(defaultBorder);
 
         text = new Text();
@@ -72,11 +72,11 @@ public class SquareView extends StackPane {
 
     private void handleClick(MouseEvent e) {
         if(e.getButton() == MouseButton.PRIMARY) {
-            if(text.getText() != "" && !text.getText().contains("?")) {
+            if(occupant != null && !(occupant instanceof Enemy)) {
                 selectedSquareView = this;
             }
         } else if (e.getButton() == MouseButton.SECONDARY) {
-            if(text.getText() == "" || text.getText().contains("?")) {
+            if(occupant == null || occupant instanceof Enemy) {
                 destinationSquareView = this;
                 boardView.sendMove(selectedSquareView, destinationSquareView);
                 selectedSquareView = null;

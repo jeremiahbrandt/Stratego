@@ -18,14 +18,16 @@ public class Server extends Application {
             portNumber = Integer.parseInt(args[0]);
         } catch (Exception e) {
             System.out.println("Correct usage: \"java -jar main.java.Server.jar <port_number>\"");
-            System.exit(1);
+            // TODO: Remove;
+            portNumber = 12345;
+//            System.exit(1);
         }
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Stratego | main.java.Server.main.java.Server");
+        primaryStage.setTitle("Stratego | Server");
         primaryStage.setScene(new Scene(new BorderPane(), 500, 500));
 //        primaryStage.show();
 

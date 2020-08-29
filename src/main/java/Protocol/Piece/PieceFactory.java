@@ -40,21 +40,21 @@ public class PieceFactory {
             String pieceCode = pieceCodes[randomInteger];
             if(numOfPieceLeft.get(pieceCode) > 0) {
                 this.numOfPieceLeft.replace(pieceCode, this.numOfPieceLeft.get(pieceCode)-1);
-                return switch (pieceCode) {
-                    case "Bomb" -> new Bomb(squarePacket);
-                    case "Marshall" -> new Marshall(squarePacket);
-                    case "General" -> new General(squarePacket);
-                    case "Colonel" -> new Colonel(squarePacket);
-                    case "Major" -> new Major(squarePacket);
-                    case "Captain" -> new Captain(squarePacket);
-                    case "Lieutenant" -> new Lieutenant(squarePacket);
-                    case "Sergeant" -> new Sergeant(squarePacket);
-                    case "Miner" -> new Miner(squarePacket);
-                    case "Scout" -> new Scout(squarePacket);
-                    case "Spy" -> new Spy(squarePacket);
-                    case "Flag" -> new Flag(squarePacket);
-                    default -> throw new Error();
-                };
+                switch (pieceCode) {
+                    case "Bomb": return new Bomb(squarePacket);
+                    case "Marshall": return new Marshall(squarePacket);
+                    case "General": return new General(squarePacket);
+                    case "Colonel": return new Colonel(squarePacket);
+                    case "Major": return new Major(squarePacket);
+                    case "Captain": return new Captain(squarePacket);
+                    case "Lieutenant": return new Lieutenant(squarePacket);
+                    case "Sergeant": return new Sergeant(squarePacket);
+                    case "Miner": return new Miner(squarePacket);
+                    case "Scout": return new Scout(squarePacket);
+                    case "Spy": return new Spy(squarePacket);
+                    case "Flag": return new Flag(squarePacket);
+                    default: throw new Error();
+                }
             }
         }
     }
